@@ -3,6 +3,7 @@
 # IDE and editors
 .idea/
 .vscode/
+.emergent/
 
 # Dependencies
 node_modules/
@@ -75,6 +76,9 @@ agenthub/agents/youtube/db
 
 # Build caches
 .cache/
+
+# Template files
+.emergent/
 
 # Mobile development
 android-sdk/ 
