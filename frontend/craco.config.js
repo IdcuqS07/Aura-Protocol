@@ -68,6 +68,50 @@ const webpackConfig = {
         webpackConfig.plugins.push(healthPluginInstance);
       }
 
+      // Add comprehensive polyfills for Node.js modules
+      webpackConfig.resolve.fallback = {
+        ...webpackConfig.resolve.fallback,
+        "buffer": require.resolve("buffer"),
+        "crypto": require.resolve("crypto-browserify"),
+        "stream": require.resolve("stream-browserify"),
+        "util": require.resolve("util"),
+        "url": require.resolve("url"),
+        "assert": require.resolve("assert"),
+        "process": require.resolve("process/browser.js"),
+        "path": require.resolve("path-browserify"),
+        "os": require.resolve("os-browserify/browser"),
+        "fs": false,
+        "net": false,
+        "tls": false,
+        "child_process": false,
+        "http": require.resolve("stream-http"),
+        "https": require.resolve("https-browserify"),
+        "zlib": require.resolve("browserify-zlib"),
+        "querystring": require.resolve("querystring-es3"),
+        "vm": require.resolve("vm-browserify")
+      };
+
+      const webpack = require('webpack');
+      webpackConfig.plugins = [
+        ...webpackConfig.plugins,
+        new webpack.ProvidePlugin({
+          Buffer: ['buffer', 'Buffer'],
+          process: 'process/browser.js',
+          global: 'global'
+        }),
+        new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+          'global': 'globalThis',
+          'process.browser': true
+        })
+      ];
+      
+      // Ignore source map warnings
+      webpackConfig.ignoreWarnings = [
+        /Failed to parse source map/,
+        /Critical dependency: the request of a dependency is an expression/
+      ];
+
       return webpackConfig;
     },
   },

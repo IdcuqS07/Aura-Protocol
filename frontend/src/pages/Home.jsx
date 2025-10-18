@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAccount, useConnect } from 'wagmi';
+import { injected } from 'wagmi/connectors';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -7,6 +9,8 @@ import { ArrowRight, ShieldCheck, Fingerprint, Lock, Network, Brain, Cloud } fro
 import { stats } from '../data/mock';
 
 const Home = () => {
+  const { isConnected } = useAccount();
+  const { connect } = useConnect();
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -27,12 +31,21 @@ const Home = () => {
               reputation and uniqueness without revealing personal data.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/dashboard">
-                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
-                  Get Your ZK Badge
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
+              {isConnected ? (
+                <Link to="/dashboard">
+                  <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
+                    Get Your ZK Badge
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+              ) : (
+                <div className="flex flex-col items-center gap-4">
+                  <Button onClick={() => connect({ connector: injected() })} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
+                    Connect Wallet
+                  </Button>
+                  <p className="text-sm text-gray-500">Connect your wallet to get started</p>
+                </div>
+              )}
               <Link to="/features">
                 <Button size="lg" variant="outline" className="px-8">
                   Learn More
@@ -133,7 +146,7 @@ const Home = () => {
               {
                 step: '01',
                 title: 'Connect & Verify',
-                description: 'Connect your wallet and complete identity verification using ZK-Proofs through Civic, Worldcoin, or Lens ID'
+                description: 'Connect your wallet using RainbowKit and complete identity verification using ZK-Proofs through Civic, Worldcoin, or Lens ID'
               },
               {
                 step: '02',
@@ -165,12 +178,18 @@ const Home = () => {
           <p className="text-xl text-indigo-100 mb-8">
             Join thousands of users creating verifiable, privacy-preserving financial identities
           </p>
-          <Link to="/dashboard">
-            <Button size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8">
-              Get Started Now
-              <ArrowRight className="ml-2 w-5 h-5" />
+          {isConnected ? (
+            <Link to="/dashboard">
+              <Button size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8">
+                Get Started Now
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
+          ) : (
+            <Button onClick={() => connect({ connector: injected() })} size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8">
+              Connect Wallet
             </Button>
-          </Link>
+          )}
         </div>
       </section>
     </div>

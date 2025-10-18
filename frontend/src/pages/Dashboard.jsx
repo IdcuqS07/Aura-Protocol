@@ -1,12 +1,15 @@
 import React from 'react';
+import { useAccount, useBalance } from 'wagmi';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
-import { ShieldCheck, Award, TrendingUp, FileText, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Award, TrendingUp, FileText, CheckCircle2, Wallet } from 'lucide-react';
 import { userProfile } from '../data/mock';
 
 const Dashboard = () => {
+  const { address, isConnected, chain } = useAccount();
+  const { data: balance } = useBalance({ address });
   const { zkIdBadge, creditPassport, reputationHistory } = userProfile;
 
   return (
@@ -16,6 +19,49 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Your Dashboard</h1>
           <p className="text-gray-600">Manage your ZK Credit Passport and on-chain reputation</p>
         </div>
+
+        {isConnected ? (
+          <Card className="mb-8 border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Wallet className="w-5 h-5 mr-2 text-green-600" />
+                Connected Wallet
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <div className="text-sm text-gray-600 mb-1">Address</div>
+                  <div className="font-mono text-sm font-semibold text-gray-900">
+                    {address?.slice(0, 6)}...{address?.slice(-4)}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-600 mb-1">Network</div>
+                  <div className="font-semibold text-green-600">{chain?.name || 'Unknown'}</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-600 mb-1">Balance</div>
+                  <div className="font-semibold text-gray-900">
+                    {balance ? `${parseFloat(balance.formatted).toFixed(4)} ${balance.symbol}` : '0.0000 ETH'}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="mb-8 border-2 border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Wallet className="w-5 h-5 mr-2 text-yellow-600" />
+                Wallet Not Connected
+              </CardTitle>
+              <CardDescription>
+                Connect your wallet to access your ZK Credit Passport and reputation data
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        )}
 
         {/* ZK Badge Card */}
         <Card className="mb-8 border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50">
@@ -104,7 +150,10 @@ const Dashboard = () => {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+              <Button 
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                disabled={!isConnected}
+              >
                 <FileText className="w-4 h-4 mr-2" />
                 Generate Proof
               </Button>
