@@ -40,7 +40,7 @@ const Home = () => {
                 </Link>
               ) : (
                 <div className="flex flex-col items-center gap-4">
-                  <Button onClick={() => connect({ connector: injected() })} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
+                  <Button onClick={() => connect({ connector: injected({ target: 'metaMask' }) })} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
                     Connect Wallet
                   </Button>
                   <p className="text-sm text-gray-500">Connect your wallet to get started</p>
@@ -186,7 +186,7 @@ const Home = () => {
               </Button>
             </Link>
           ) : (
-            <Button onClick={() => connect({ connector: injected() })} size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8">
+            <Button onClick={() => connect({ connector: injected({ target: 'metaMask' }) })} size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8">
               Connect Wallet
             </Button>
           )}

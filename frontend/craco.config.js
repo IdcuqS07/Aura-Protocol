@@ -89,8 +89,7 @@ const webpackConfig = {
         "zlib": require.resolve("browserify-zlib"),
         "querystring": require.resolve("querystring-es3"),
         "vm": require.resolve("vm-browserify"),
-        "@react-native-async-storage/async-storage": false,
-        "react-native": false
+
       };
 
       const webpack = require('webpack');

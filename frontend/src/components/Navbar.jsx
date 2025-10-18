@@ -7,10 +7,10 @@ import { Menu, X, Wallet } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
+  const location = useLocation();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -58,7 +58,7 @@ const Navbar = () => {
               </Button>
             ) : (
               <Button
-                onClick={() => connect({ connector: injected() })}
+                onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white"
               >
                 <Wallet className="w-4 h-4 mr-2" />
@@ -103,7 +103,7 @@ const Navbar = () => {
               </Button>
             ) : (
               <Button
-                onClick={() => connect({ connector: injected() })}
+                onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}
                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
               >
                 <Wallet className="w-4 h-4 mr-2" />
