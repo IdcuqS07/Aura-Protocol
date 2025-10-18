@@ -1,6 +1,10 @@
-# Aura Protocol - ZK Credit Passport
-
-Universal Trust in a Trustless World. Aura Protocol builds ZK Credit Passport — your on-chain financial identity that verifies reputation and uniqueness without revealing personal data.
+<div align="center">
+  <img src="./Aura.png" alt="Aura Protocol Logo" width="200" height="200">
+  
+  # Aura Protocol - ZK Credit Passport
+  
+  Universal Trust in a Trustless World. Aura Protocol builds ZK Credit Passport — your on-chain financial identity that verifies reputation and uniqueness without revealing personal data.
+</div>
 
 ## 🚀 Features
 
