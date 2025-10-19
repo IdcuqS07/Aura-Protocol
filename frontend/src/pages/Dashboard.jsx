@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
-import { ShieldCheck, Award, TrendingUp, FileText, CheckCircle2, Wallet } from 'lucide-react';
+import { ShieldCheck, Award, TrendingUp, FileText, CheckCircle2, Wallet, X, Share, User, History } from 'lucide-react';
 import { userProfile } from '../data/mock';
 import NetworkDetector from '../components/NetworkDetector';
 
@@ -12,6 +12,7 @@ const Dashboard = () => {
   const { address, isConnected } = useAccount();
   const { data: balance } = useBalance({ address });
   const [networkName, setNetworkName] = React.useState('Unknown');
+  const [activeModal, setActiveModal] = useState(null);
   const { zkIdBadge, creditPassport, reputationHistory } = userProfile;
 
   React.useEffect(() => {
@@ -178,14 +179,28 @@ const Dashboard = () => {
                 <FileText className="w-4 h-4 mr-2" />
                 Generate Proof
               </Button>
-              <Button variant="outline" className="w-full">
-                <TrendingUp className="w-4 h-4 mr-2" />
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setActiveModal('history')}
+              >
+                <History className="w-4 h-4 mr-2" />
                 View History
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setActiveModal('profile')}
+              >
+                <User className="w-4 h-4 mr-2" />
                 Update Profile
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setActiveModal('share')}
+              >
+                <Share className="w-4 h-4 mr-2" />
                 Share Passport
               </Button>
             </CardContent>
@@ -240,6 +255,103 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Modals */}
+        {activeModal === 'history' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-2xl font-bold text-gray-900">Transaction History</h3>
+                  <Button variant="ghost" size="sm" onClick={() => setActiveModal(null)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  {[1,2,3,4,5].map(i => (
+                    <div key={i} className="flex justify-between items-center p-4 border rounded-lg">
+                      <div>
+                        <div className="font-semibold">DeFi Transaction #{i}</div>
+                        <div className="text-sm text-gray-600">2024-01-{10+i}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-green-600">+{i*10} Points</div>
+                        <div className="text-sm text-gray-600">Completed</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeModal === 'profile' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-md w-full">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-2xl font-bold text-gray-900">Update Profile</h3>
+                  <Button variant="ghost" size="sm" onClick={() => setActiveModal(null)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
+                    <input className="w-full p-2 border rounded-lg" placeholder="Enter display name" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                    <textarea className="w-full p-2 border rounded-lg" rows="3" placeholder="Tell us about yourself"></textarea>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button className="bg-indigo-600 hover:bg-indigo-700 text-white flex-1">
+                      Save Changes
+                    </Button>
+                    <Button variant="outline" onClick={() => setActiveModal(null)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeModal === 'share' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-md w-full">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-2xl font-bold text-gray-900">Share Passport</h3>
+                  <Button variant="ghost" size="sm" onClick={() => setActiveModal(null)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <div className="bg-gray-100 p-4 rounded-lg mb-4">
+                      <div className="text-sm text-gray-600">Your Passport URL</div>
+                      <div className="font-mono text-sm break-all">https://aura.app/passport/{address?.slice(0,8)}</div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                      Copy Link
+                    </Button>
+                    <Button className="bg-green-600 hover:bg-green-700 text-white">
+                      Share on Twitter
+                    </Button>
+                  </div>
+                  <Button variant="outline" className="w-full" onClick={() => setActiveModal(null)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

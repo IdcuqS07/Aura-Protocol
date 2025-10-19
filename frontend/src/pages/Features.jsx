@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { ShieldCheck, Fingerprint, Lock, Network, Brain, Cloud, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Fingerprint, Lock, Network, Brain, Cloud, ArrowRight, X } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Link } from 'react-router-dom';
 
 const Features = () => {
+  const [selectedFeature, setSelectedFeature] = useState(null);
   const mainFeatures = [
     {
       icon: ShieldCheck,
@@ -139,7 +140,10 @@ const Features = () => {
                       </div>
                       <h3 className="text-3xl font-bold text-gray-900 mb-4">{feature.title}</h3>
                       <p className="text-lg text-gray-600 mb-6">{feature.description}</p>
-                      <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                      <Button 
+                        onClick={() => setSelectedFeature(feature)}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                      >
                         Learn More
                         <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
@@ -207,6 +211,58 @@ const Features = () => {
           </Card>
         </div>
       </div>
+
+      {/* Modal */}
+      {selectedFeature && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center">
+                  <div className={`w-12 h-12 bg-gradient-to-br from-${selectedFeature.color}-100 to-${selectedFeature.color}-50 rounded-lg flex items-center justify-center mr-4`}>
+                    <selectedFeature.icon className={`w-6 h-6 text-${selectedFeature.color}-600`} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">{selectedFeature.title}</h3>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setSelectedFeature(null)}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              <p className="text-gray-600 mb-6">{selectedFeature.description}</p>
+              
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">Technical Details</h4>
+                <ul className="space-y-3">
+                  {selectedFeature.details.map((detail, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <div className={`w-2 h-2 bg-${selectedFeature.color}-600 rounded-full mt-2 mr-3 flex-shrink-0`}></div>
+                      <span className="text-gray-700">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <div className="flex gap-3">
+                  <Link to="/dashboard">
+                    <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                      Try It Now
+                    </Button>
+                  </Link>
+                  <Button variant="outline" onClick={() => setSelectedFeature(null)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
