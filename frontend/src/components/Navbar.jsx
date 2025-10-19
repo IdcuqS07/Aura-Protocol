@@ -1,34 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { injected } from 'wagmi/connectors';
 import { Button } from './ui/button';
 import { Menu, X, Wallet } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [address, setAddress] = useState('');
+  const [isConnected, setIsConnected] = useState(false);
   const [networkName, setNetworkName] = useState('Unknown');
-  const { address, isConnected } = useAccount();
-  const { connect } = useConnect();
-  const { disconnect } = useDisconnect();
   const location = useLocation();
 
-  React.useEffect(() => {
-    const getNetwork = async () => {
-      if (typeof window !== 'undefined' && window.ethereum && isConnected) {
+  useEffect(() => {
+    const checkConnection = async () => {
+      if (typeof window !== 'undefined' && window.ethereum) {
         try {
-          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-          const chainIdNum = parseInt(chainId, 16);
-          if (chainIdNum === 1) setNetworkName('Mainnet');
-          else if (chainIdNum === 11155111) setNetworkName('Sepolia');
-          else setNetworkName(`Chain ${chainIdNum}`);
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          if (accounts.length > 0) {
+            setAddress(accounts[0]);
+            setIsConnected(true);
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            const chainIdNum = parseInt(chainId, 16);
+            if (chainIdNum === 1) setNetworkName('Mainnet');
+            else if (chainIdNum === 11155111) setNetworkName('Sepolia');
+            else setNetworkName(`Chain ${chainIdNum}`);
+          }
         } catch (error) {
-          setNetworkName('Unknown');
+          console.error('Error checking connection:', error);
         }
       }
     };
-    getNetwork();
-  }, [isConnected]);
+    checkConnection();
+  }, []);
+
+  const connectWallet = async () => {
+    if (typeof window !== 'undefined' && window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setAddress(accounts[0]);
+        setIsConnected(true);
+      } catch (error) {
+        console.error('Connection failed:', error);
+      }
+    }
+  };
+
+  const disconnect = () => {
+    setIsConnected(false);
+    setAddress('');
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -72,7 +91,7 @@ const Navbar = () => {
                   {networkName}
                 </div>
                 <Button
-                  onClick={() => disconnect()}
+                  onClick={disconnect}
                   className="bg-red-600 hover:bg-red-700 text-white"
                 >
                   <Wallet className="w-4 h-4 mr-2" />
@@ -81,7 +100,7 @@ const Navbar = () => {
               </div>
             ) : (
               <Button
-                onClick={() => connect({ connector: injected() })}
+                onClick={connectWallet}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white"
               >
                 <Wallet className="w-4 h-4 mr-2" />
@@ -122,7 +141,7 @@ const Navbar = () => {
                   {networkName}
                 </div>
                 <Button
-                  onClick={() => disconnect()}
+                  onClick={disconnect}
                   className="w-full bg-red-600 hover:bg-red-700 text-white"
                 >
                   <Wallet className="w-4 h-4 mr-2" />
@@ -131,7 +150,7 @@ const Navbar = () => {
               </div>
             ) : (
               <Button
-                onClick={() => connect({ connector: injected() })}
+                onClick={connectWallet}
                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
               >
                 <Wallet className="w-4 h-4 mr-2" />

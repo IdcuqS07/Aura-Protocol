@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAccount, useConnect } from 'wagmi';
-import { injected } from 'wagmi/connectors';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -9,8 +7,33 @@ import { ArrowRight, ShieldCheck, Fingerprint, Lock, Network, Brain, Cloud } fro
 import { stats } from '../data/mock';
 
 const Home = () => {
-  const { isConnected } = useAccount();
-  const { connect } = useConnect();
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      if (typeof window !== 'undefined' && window.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          setIsConnected(accounts.length > 0);
+        } catch (error) {
+          console.error('Error checking connection:', error);
+        }
+      }
+    };
+    checkConnection();
+  }, []);
+
+  const connectWallet = async () => {
+    if (typeof window !== 'undefined' && window.ethereum) {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setIsConnected(true);
+      } catch (error) {
+        console.error('Connection failed:', error);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -40,7 +63,7 @@ const Home = () => {
                 </Link>
               ) : (
                 <div className="flex flex-col items-center gap-4">
-                  <Button onClick={() => connect({ connector: injected() })} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
+                  <Button onClick={connectWallet} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
                     Connect Wallet
                   </Button>
                   <p className="text-sm text-gray-500">Connect your wallet to get started</p>
@@ -186,7 +209,7 @@ const Home = () => {
               </Button>
             </Link>
           ) : (
-            <Button onClick={() => connect({ connector: injected() })} size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8">
+            <Button onClick={connectWallet} size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8">
               Connect Wallet
             </Button>
           )}
