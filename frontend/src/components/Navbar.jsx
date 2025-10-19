@@ -7,10 +7,28 @@ import { Menu, X, Wallet } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [networkName, setNetworkName] = useState('Unknown');
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const location = useLocation();
+
+  React.useEffect(() => {
+    const getNetwork = async () => {
+      if (window.ethereum && isConnected) {
+        try {
+          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+          const chainIdNum = parseInt(chainId, 16);
+          if (chainIdNum === 1) setNetworkName('Mainnet');
+          else if (chainIdNum === 11155111) setNetworkName('Sepolia');
+          else setNetworkName(`Chain ${chainIdNum}`);
+        } catch (error) {
+          setNetworkName('Unknown');
+        }
+      }
+    };
+    getNetwork();
+  }, [isConnected]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -49,13 +67,18 @@ const Navbar = () => {
 
           <div className="hidden md:block">
             {isConnected ? (
-              <Button
-                onClick={() => disconnect()}
-                className="bg-red-600 hover:bg-red-700 text-white"
-              >
-                <Wallet className="w-4 h-4 mr-2" />
-                {address?.slice(0, 6)}...{address?.slice(-4)}
-              </Button>
+              <div className="flex items-center space-x-2">
+                <div className="text-xs bg-gray-100 px-2 py-1 rounded">
+                  {networkName}
+                </div>
+                <Button
+                  onClick={() => disconnect()}
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
+                  <Wallet className="w-4 h-4 mr-2" />
+                  {address?.slice(0, 6)}...{address?.slice(-4)}
+                </Button>
+              </div>
             ) : (
               <Button
                 onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}
@@ -94,13 +117,18 @@ const Navbar = () => {
               </Link>
             ))}
             {isConnected ? (
-              <Button
-                onClick={() => disconnect()}
-                className="w-full bg-red-600 hover:bg-red-700 text-white"
-              >
-                <Wallet className="w-4 h-4 mr-2" />
-                {address?.slice(0, 6)}...{address?.slice(-4)}
-              </Button>
+              <div className="space-y-2">
+                <div className="text-xs bg-gray-100 px-2 py-1 rounded text-center">
+                  {networkName}
+                </div>
+                <Button
+                  onClick={() => disconnect()}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white"
+                >
+                  <Wallet className="w-4 h-4 mr-2" />
+                  {address?.slice(0, 6)}...{address?.slice(-4)}
+                </Button>
+              </div>
             ) : (
               <Button
                 onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}

@@ -6,11 +6,30 @@ import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { ShieldCheck, Award, TrendingUp, FileText, CheckCircle2, Wallet } from 'lucide-react';
 import { userProfile } from '../data/mock';
+import NetworkDetector from '../components/NetworkDetector';
 
 const Dashboard = () => {
-  const { address, isConnected, chain } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data: balance } = useBalance({ address });
+  const [networkName, setNetworkName] = React.useState('Unknown');
   const { zkIdBadge, creditPassport, reputationHistory } = userProfile;
+
+  React.useEffect(() => {
+    const getNetwork = async () => {
+      if (window.ethereum && isConnected) {
+        try {
+          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+          const chainIdNum = parseInt(chainId, 16);
+          if (chainIdNum === 1) setNetworkName('Ethereum Mainnet');
+          else if (chainIdNum === 11155111) setNetworkName('Sepolia Testnet');
+          else setNetworkName(`Chain ${chainIdNum}`);
+        } catch (error) {
+          setNetworkName('Unknown');
+        }
+      }
+    };
+    getNetwork();
+  }, [isConnected]);
 
   return (
     <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -19,6 +38,8 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Your Dashboard</h1>
           <p className="text-gray-600">Manage your ZK Credit Passport and on-chain reputation</p>
         </div>
+        
+        <NetworkDetector />
 
         {isConnected ? (
           <Card className="mb-8 border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
@@ -38,7 +59,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <div className="text-sm text-gray-600 mb-1">Network</div>
-                  <div className="font-semibold text-green-600">{chain?.name || 'Unknown'}</div>
+                  <div className="font-semibold text-green-600">{networkName}</div>
                 </div>
                 <div>
                   <div className="text-sm text-gray-600 mb-1">Balance</div>
