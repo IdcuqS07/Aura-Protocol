@@ -15,7 +15,7 @@ const Navbar = () => {
 
   React.useEffect(() => {
     const getNetwork = async () => {
-      if (window.ethereum && isConnected) {
+      if (typeof window !== 'undefined' && window.ethereum && isConnected) {
         try {
           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
           const chainIdNum = parseInt(chainId, 16);

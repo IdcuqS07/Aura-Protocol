@@ -1,13 +1,8 @@
 {
   "name": "aura-protocol",
   "version": "1.0.0",
-  "description": "Aura Protocol - ZK Credit Passport",
   "scripts": {
-    "build": "cd frontend && npm ci --legacy-peer-deps && npm run build",
-    "dev": "concurrently \"cd frontend && npm start\" \"cd backend && uvicorn server:app --reload --port 8000\"",
+    "build": "cd frontend && npm install --legacy-peer-deps && npm run build",
     "start": "cd frontend && npm start"
-  },
-  "devDependencies": {
-    "concurrently": "^7.6.0"
   }
 }

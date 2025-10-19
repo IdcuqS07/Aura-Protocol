@@ -10,12 +10,10 @@ const NetworkDetector = () => {
 
   useEffect(() => {
     const detectNetwork = async () => {
-      console.log('Detecting network, isConnected:', isConnected);
-      if (window.ethereum && isConnected) {
+      if (typeof window !== 'undefined' && window.ethereum && isConnected) {
         try {
           const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
           const chainIdNum = parseInt(currentChainId, 16);
-          console.log('Chain ID detected:', chainIdNum);
           setChainId(chainIdNum);
           
           if (chainIdNum === 1) {
@@ -28,14 +26,12 @@ const NetworkDetector = () => {
         } catch (error) {
           console.error('Error detecting network:', error);
         }
-      } else {
-        console.log('No ethereum or not connected');
       }
     };
     
     detectNetwork();
     
-    if (window.ethereum) {
+    if (typeof window !== 'undefined' && window.ethereum) {
       window.ethereum.on('chainChanged', detectNetwork);
       return () => window.ethereum.removeListener('chainChanged', detectNetwork);
     }
