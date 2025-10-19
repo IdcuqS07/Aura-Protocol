@@ -81,7 +81,7 @@ const Navbar = () => {
               </div>
             ) : (
               <Button
-                onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}
+                onClick={() => connect({ connector: injected() })}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white"
               >
                 <Wallet className="w-4 h-4 mr-2" />
@@ -131,7 +131,7 @@ const Navbar = () => {
               </div>
             ) : (
               <Button
-                onClick={() => connect({ connector: injected({ target: 'metaMask' }) })}
+                onClick={() => connect({ connector: injected() })}
                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
               >
                 <Wallet className="w-4 h-4 mr-2" />
