@@ -1,44 +1,25 @@
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
 .App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
 }
 
-/* Smooth transitions for interactive elements */
-button, a {
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
-}
-
-button:hover, a:hover {
-  transform: translateY(-1px);
-}
-
-button:active, a:active {
-  transform: translateY(0);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
+button {
+  background-color: #61dafb;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
   border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  cursor: pointer;
+  font-size: 16px;
 }
