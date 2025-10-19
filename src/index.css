@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide any emergent watermarks */
+#emergent-badge,
+[id*="emergent"],
+[class*="emergent"] {
+  display: none !important;
+}
+
+/* Hide any watermark that might be injected */
+a[href*="emergent.sh"] {
+  display: none !important;
+}

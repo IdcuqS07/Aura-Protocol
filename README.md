@@ -1,178 +1,70 @@
-<div align="center">
-  <img src="./Aura.png" alt="Aura Protocol Logo" width="200" height="200">
-  
-  # Aura Protocol - ZK Credit Passport
-  
-  Universal Trust in a Trustless World. Aura Protocol builds ZK Credit Passport — your on-chain financial identity that verifies reputation and uniqueness without revealing personal data.
-</div>
+# Getting Started with Create React App
 
-## 🚀 Features
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-- **ZK Credit Passport** - On-chain financial identity with privacy-preserving verification
-- **Proof-of-Uniqueness** - Cryptographic verification ensuring one unique identity per user
-- **Privacy-First** - ZK-Proofs protect your data while proving your reputation
-- **Cross-Chain Ready** - AuraX enables reputation across multiple blockchains
-- **AI Risk Oracle** - Advanced AI analyzes on-chain behavior for accurate risk assessment
-- **Proof-as-a-Service** - API for protocols to verify user reputation in real-time
+## Available Scripts
 
-## 🛠 Tech Stack
+In the project directory, you can run:
 
-### Frontend
-- **React 19** - Modern React with latest features
-- **Wagmi** - React hooks for Ethereum wallet connection
-- **Viem** - TypeScript interface for Ethereum
-- **TailwindCSS** - Utility-first CSS framework
-- **Radix UI** - Accessible component primitives
-- **Lucide React** - Beautiful icons
+### `npm start`
 
-### Backend
-- **FastAPI** - Modern Python web framework
-- **Uvicorn** - ASGI server for production
-- **Pydantic** - Data validation using Python type hints
-- **Motor** - Async MongoDB driver
-- **JWT** - JSON Web Token authentication
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## 📦 Installation
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-### Prerequisites
-- Node.js 18+ 
-- Python 3.8+
-- MongoDB (optional, for backend)
+### `npm test`
 
-### Frontend Setup
-```bash
-cd frontend
-npm install --legacy-peer-deps
-npm start
-```
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### Backend Setup
-```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn server:app --reload --host 0.0.0.0 --port 8000
-```
+### `npm run build`
 
-## 🌐 Usage
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-1. **Start Backend**: `http://localhost:8000`
-2. **Start Frontend**: `http://localhost:3001`
-3. **Connect Wallet**: Click "Connect Wallet" to link your Ethereum wallet
-4. **View Dashboard**: Access your ZK Credit Passport and reputation data
-5. **Generate Proofs**: Create privacy-preserving proofs of your reputation
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## 🔗 Wallet Connection
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-The app supports wallet connection through:
-- **MetaMask** - Browser extension wallet
-- **Injected Providers** - Any browser-based Ethereum wallet
-- **Mainnet & Sepolia** - Support for both networks
+### `npm run eject`
 
-## 📱 Pages
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-- **Home** - Landing page with features overview
-- **Features** - Detailed feature explanations
-- **Roadmap** - Development timeline
-- **Dashboard** - User wallet and reputation management
-- **Analytics** - Reputation metrics and insights
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## 🔧 Configuration
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-### Environment Variables
-```bash
-# Frontend (.env)
-PORT=3001
-GENERATE_SOURCEMAP=false
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-# Backend (.env)
-MONGODB_URL=mongodb://localhost:27017
-JWT_SECRET=your-secret-key
-```
+## Learn More
 
-### Wagmi Configuration
-```javascript
-// src/wagmi.js
-export const config = createConfig({
-  chains: [mainnet, sepolia],
-  connectors: [injected()],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-  },
-})
-```
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-## 🏗 Architecture
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-```
-app/
-├── frontend/          # React frontend application
-│   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   ├── pages/         # Application pages
-│   │   ├── data/          # Mock data and constants
-│   │   └── wagmi.js       # Wallet configuration
-│   └── public/            # Static assets
-├── backend/           # FastAPI backend application
-│   ├── server.py          # Main application file
-│   └── requirements.txt   # Python dependencies
-└── tests/             # Test files
-```
+### Code Splitting
 
-## 🎨 UI Components
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-Built with **Radix UI** primitives:
-- Accordion, Alert Dialog, Avatar
-- Button, Card, Checkbox
-- Dialog, Dropdown Menu, Form
-- Navigation Menu, Progress, Tabs
-- Toast, Tooltip, and more
+### Analyzing the Bundle Size
 
-## 🔐 Security Features
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-- **ZK-Proofs** - Zero-knowledge cryptographic proofs
-- **Privacy-Preserving** - No personal data exposure
-- **Secure Wallet Connection** - Industry-standard wallet integration
-- **JWT Authentication** - Secure API access
-- **Input Validation** - Comprehensive data validation
+### Making a Progressive Web App
 
-## 🚀 Deployment
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Frontend (Vercel/Netlify)
-```bash
-npm run build
-# Deploy dist/ folder
-```
+### Advanced Configuration
 
-### Backend (Docker)
-```dockerfile
-FROM python:3.9
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000"]
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-## 🤝 Contributing
+### Deployment
 
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-## 📄 License
+### `npm run build` fails to minify
 
-This project is licensed under the MIT License.
-
-## 🔗 Links
-
-- **Website**: [Aura Protocol](https://aura-protocol.com)
-- **Documentation**: [Docs](https://docs.aura-protocol.com)
-- **Twitter**: [@AuraProtocol](https://twitter.com/auraprotocol)
-
----
-
-Built with ❤️ for the decentralized future
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
